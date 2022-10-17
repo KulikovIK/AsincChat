@@ -2,6 +2,7 @@ import argparse
 import logging
 import socket
 import log.client_log_config
+from log.logger import Log
 
 BLOCK_LEN: int = 1024
 EOM: bytes = b'ENDOFMESSAGE___'
@@ -9,16 +10,16 @@ WELCOME_MESSAGE: str = 'Hi! What is your name?'
 LOGGER = logging.getLogger('app.client')
 
 
+@Log(LOGGER, __name__)
 def parse_cli_arguments():
-    LOGGER.info('client_parse_cli_arguments()')
     parser = argparse.ArgumentParser(description="Эхо сервер")
     parser.add_argument('--host', type=str, default='localhost')
     parser.add_argument('--port', type=int, default=9999)
     return parser.parse_args()
 
 
+@Log(LOGGER, __name__)
 def read_message(connection) -> bytes:
-    LOGGER.info(f'client_read_message()')
     message = b''
     while len(message) < len(EOM) or message[-len(EOM):] != EOM:
         try:
