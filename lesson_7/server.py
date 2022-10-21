@@ -30,6 +30,7 @@ def write_responses(requests: dict, write_client: list, all_clients: list) -> li
         if sock in requests:
             try:
                 response = requests[sock].encode('utf-8')
+                print(response)
                 for client in all_clients:
                     client.send(response)
             except Exception:
@@ -60,12 +61,13 @@ def mainloop(host: str, port: int) -> None:
                 w = []
                 try:
                     r, w, e = select(clients, clients, [], wait)
-                except:
-                    pass
 
-                requests = read_requests(r, clients)
-                if requests:
-                    clients = write_responses(requests, w, clients)
+                    requests = read_requests(r, clients)
+                    if requests:
+                        clients = write_responses(requests, w, clients)
+
+                except Exception as e:
+                    pass
 
 
 if __name__ == '__main__':
