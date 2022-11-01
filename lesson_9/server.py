@@ -2,6 +2,8 @@ import argparse
 from select import select
 from socket import socket, AF_INET, SOCK_STREAM
 
+from db_module import MessangerDB
+
 
 class Server:
 
@@ -10,7 +12,7 @@ class Server:
         self._host: str = host
         self._port: int = port
         self._connections: list = []
-
+        self.database = MessangerDB()
 
     @staticmethod
     def parse_server_arguments() -> (str, int):
